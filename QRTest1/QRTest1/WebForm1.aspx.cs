@@ -57,5 +57,62 @@ namespace QRTest1
 
             Decoded.Text = DecodedDataFromQR;
         }
+
+        protected void Button3_Click(object sender, EventArgs e)
+        {
+            var application = new Microsoft.Office.Interop.Word.Application();
+
+
+
+
+            application.Visible = true;
+
+
+            List<formInputs> formInputsList = new List<formInputs>
+{
+    new formInputs {Org="HSBC", Name="Jay",Code="C:\\SAUCE\\QRTest1\\QRTest1\\img.jpg"},
+    new formInputs {Org="SANT", Name="Sakis",Code="C:\\SAUCE\\QRTest1\\QRTest1\\img.jpg"},
+    new formInputs {Org="BARC", Name="Kev",Code="C:\\SAUCE\\QRTest1\\QRTest1\\img.jpg"}
+};
+
+            formInputsList.ForEach(x => NewMethod(application, x));
+
+
+        }
+
+        private  void NewMethod(Microsoft.Office.Interop.Word.Application application, formInputs input)
+        {
+
+            EcodeDataInQR(input.Org, input.Name);
+
+            var document = new Microsoft.Office.Interop.Word.Document();
+            document = application.Documents.Add(Template: @"c:\sauce\sauce.docx");
+            foreach (Microsoft.Office.Interop.Word.Field field in document.Fields)
+            {
+                if (field.Code.Text.Contains("Organisation"))
+                {
+                    field.Select();
+                    application.Selection.TypeText(input.Org);
+                }
+                else if (field.Code.Text.Contains("Name"))
+                {
+                    field.Select();
+                    application.Selection.TypeText(input.Name);
+                }
+                else if (field.Code.Text.Contains("SauceCode"))
+                {
+                    field.Select();
+                    application.Selection.InlineShapes.AddPicture(input.Code);
+                }
+            }
+        }
     }
+
+    public class formInputs
+    {
+        public string Org { get; set; }
+        public string Name { get; set; }
+        public string Code { get; set; }
+    }
+
 }

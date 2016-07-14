@@ -27,6 +27,9 @@
             <asp:Button ID="Button2" runat="server" OnClick="Button2_Click" Text="Decode Data" />
         </div> 
         <asp:Label ID="Decoded" runat="server" Text=""></asp:Label>
+        <br />
+        <asp:Button ID="Button3" runat="server" OnClick="Button3_Click" Text="Button" />
+        <br />
     </form>
 </body>
 </html>
